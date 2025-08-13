@@ -14,7 +14,7 @@
 ### 工作原理
 - 监听工作区 `layout-change` 事件，统计 `thino_view` 视图叶子数量变化：
   - 0 → >0：判定为 Thino 打开，触发收起右侧栏。
-  - >0 → 0：判定为 Thino 全部关闭，触发展开右侧栏。
+  - \>0 → 0：判定为 Thino 全部关闭，触发展开右侧栏。
 - 优先调用内部 API `workspace.rightSplit.collapse()/expand()`，若不可用则回退执行命令 `workspace:toggle-right-sidebar`。
 - 仅在桌面端生效。
 
@@ -25,14 +25,20 @@
 - 依赖插件：Thino（`obsidian-memos`）。
 
 ### 安装
-1) 从构建产物手动安装（推荐）
+1) 通过 BRAT 插件安装（推荐）
+- 在 Obsidian 社区插件中安装并启用 BRAT（Beta Reviewers Auto-update Tester）。
+- 打开 BRAT 设置 → Add Beta plugin → 输入本仓库的 GitHub 地址`https://github.com/WisOcean/Switch-right-sidebar-for-Thino`。
+- 点击 Add plugin，返回社区插件列表启用本插件与 Thino。
+- BRAT 会自动跟随仓库更新，保持插件为最新版本。
+
+2) 从构建产物手动安装
 - 将以下文件复制到你的库目录：`<你的库>/.obsidian/plugins/switch-right-sidebar-for-thino/`
   - `manifest.json`
   - `main.js`
   - `styles.css`
 - 在 Obsidian 设置 → 第三方插件中启用本插件与 Thino。
 
-2) 从源码构建
+3) 从源码构建
 - Node.js ≥ 16
 - 在插件根目录执行：
   - `npm i`
