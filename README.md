@@ -1,66 +1,51 @@
-## Switch right sidebar for Thino
+## Auto Switch Sidebar
 
-一个极简的 Obsidian 插件：当你打开 Thino（`obsidian-memos`）时自动收起右侧边栏；当关闭最后一个 Thino 标签页时自动展开右侧边栏。无需任何设置。
+一个强大的 Obsidian 插件：根据当前活跃的插件视图，自动展开或收起左/右侧边栏。
 
-— 本插件 100% 由 AI 完成，作者不再更新，欢迎 Fork 自行修改。 —
+### ✨ 主要功能
 
-![视频](<Switch right sidebar for Thino.gif>)
+-   **智能自动切换**：当切换到特定的插件视图（如 Thino, Graph View 等）时，自动执行预设的侧边栏操作。
+-   **独立控制**：针对每个视图规则，可以分别设置左侧边栏和右侧边栏的行为（展开、收起、或保持原样）。
+-   **自动检测 ID**：设置界面会自动检测当前活跃窗口的视图 ID，一键填入，无需手动查找。
+-   **拖拽排序**：支持拖拽调整规则的优先级和顺序。
+-   **现代化界面**：卡片式布局，清晰直观。
 
-### 功能
-- 打开 Thino 时：若右侧边栏为开启状态，自动收起右侧边栏；若右侧边栏已关闭，则不干预。
-- 关闭 Thino 时：当最后一个 Thino 视图被关闭时，自动展开右侧边栏。
-- 无设置页、无命令、无 Ribbon 图标，开箱即用。
+### ⚙️ 设置说明
 
-### 工作原理
-- 监听工作区 `layout-change` 事件，统计 `thino_view` 视图叶子数量变化：
-  - 0 → >0：判定为 Thino 打开，触发收起右侧栏。
-  - \>0 → 0：判定为 Thino 全部关闭，触发展开右侧栏。
-- 优先调用内部 API `workspace.rightSplit.collapse()/expand()`，若不可用则回退执行命令 `workspace:toggle-right-sidebar`。
-- 仅在桌面端生效。
+1. **打开设置**：进入 Obsidian 设置 -> 第三方插件 -> Auto Switch Sidebar。
+2. **添加规则**：
+    - **自动获取**：先在后台打开你想要设置的插件页面，然后进入设置页。插件会自动显示当前活跃视图的 ID，点击“填入当前 ID”按钮即可。
+    - **手动输入**：你也可以手动输入视图 ID（例如 `thino_view`, `graph-view`）。
+    - 点击“添加”按钮生成新规则。
+3. **配置行为**：
+    - 在生成的规则卡片中，分别设置“左侧边栏”和“右侧边栏”的动作：
+        - **保持原样**：不改变当前侧边栏状态。
+        - **展开**：强制打开侧边栏。
+        - **收起**：强制关闭侧边栏。
+4. **管理规则**：
+    - **排序**：按住卡片即可拖拽排序。
+    - **删除**：点击卡片右上角的 `✕` 按钮删除规则。
 
-### 兼容性
-- Obsidian ≥ 0.15.0（与本仓库 `manifest.json` 一致）。
-- 桌面端：已适配。
-- 移动端：不执行任何动作。
-- 依赖插件：Thino（`obsidian-memos`）。
+### 📦 安装方法
 
-### 安装
-1) 通过 BRAT 插件安装（推荐）
-- 在 Obsidian 社区插件中安装并启用 BRAT（Beta Reviewers Auto-update Tester）。
-- 打开 BRAT 设置 → Add Beta plugin → 输入本仓库的 GitHub 地址`https://github.com/WisOcean/Switch-right-sidebar-for-Thino`。
-- 点击 Add plugin，返回社区插件列表启用本插件与 Thino。
-- BRAT 会自动跟随仓库更新，保持插件为最新版本。
+#### 方法 1：通过 BRAT 插件安装（推荐）
 
-2) 从构建产物手动安装
-- 将以下文件复制到你的库目录：`<你的库>/.obsidian/plugins/switch-right-sidebar-for-thino/`
-  - `manifest.json`
-  - `main.js`
-  - `styles.css`
-- 在 Obsidian 设置 → 第三方插件中启用本插件与 Thino。
+1. 在 Obsidian 社区插件中安装并启用 **BRAT** (Beta Reviewers Auto-update Tester)。
+2. 打开 BRAT 设置 → Add Beta plugin。
+3. 输入本仓库的 GitHub 地址：`https://github.com/WisOcean/Switch-right-sidebar-for-Thino`
+4. 点击 Add plugin，返回社区插件列表启用 **Auto Switch Sidebar**。
 
-3) 从源码构建
-- Node.js ≥ 16
-- 在插件根目录执行：
-  - `npm i`
-  - `npm run build`
-- 构建完成后会生成 `main.js`，按“手动安装”章节复制至你的库。
+#### 方法 2：手动安装
 
-### 使用
-- 启用插件后，无需额外操作。
-- 从左侧栏点击 Thino（或使用命令/快捷键）打开 Thino 视图：
-  - 若右侧栏当前为开启，则会先被自动收起。
-  - 当关闭最后一个 Thino 标签页后，右侧栏会自动展开。
+1. 下载本仓库 Release 页面的最新发行版（`main.js`, `manifest.json`, `styles.css`）。
+2. 将文件放入你的库目录：`.obsidian/plugins/auto-switch-sidebar/`。
+3. 重启 Obsidian 或重新加载插件，在设置中启用。
 
-### 已知限制与说明
-- 仅桌面端生效；移动端无右侧边栏的概念。
-- 若 Obsidian 内部 API 变更（如 `rightSplit` 行为），本插件将回退使用命令 `workspace:toggle-right-sidebar`，但在极端情况下可能出现误判或闪烁。
-- 如果你在 Thino 打开期间手动切换右侧栏状态，本插件不会强行覆盖；当 Thino 全部关闭时仍会尝试展开右侧栏。
+### 💻 兼容性
 
-### 常见问题
-- 看不到效果？请确认：
-  - 已安装并启用 Thino（`obsidian-memos`）。
-  - 在桌面端使用。
-  - 右侧边栏确实处于“展开/收起”的可切换状态。
+-   Obsidian ≥ 0.15.0
+-   仅在桌面端生效（移动端无侧边栏概念）。
 
-### 许可
-- 继承模板的 MIT 许可（见仓库中的 `LICENSE`）。
+### 📄 许可
+
+-   MIT License
