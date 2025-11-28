@@ -108,14 +108,25 @@ class AutoSwitchSettingTab extends PluginSettingTab {
 
 		containerEl.createEl('h2', { text: '自动切换侧边栏设置' });
 
+        // --- 1. 准备数据 ---
+        const allOpenViewTypes = new Set<string>();
+        this.app.workspace.iterateRootLeaves(leaf => {
+            allOpenViewTypes.add(leaf.view.getViewType());
+        });
+        const existingRuleTypes = new Set(this.plugin.settings.rules.map(r => r.viewType));
+        const availableViewTypes = Array.from(allOpenViewTypes).filter(vt => !existingRuleTypes.has(vt));
+
         const activeLeaf = this.app.workspace.getMostRecentLeaf();
         const currentViewType = activeLeaf?.view.getViewType();
+        const isCurrentRuleExist = currentViewType && existingRuleTypes.has(currentViewType);
 
-        const addRuleSetting = new Setting(containerEl)
-            .setName('添加新规则')
-            .setDesc(currentViewType 
-                ? `输入视图 ID。当前检测到的活跃视图 ID 为: "${currentViewType}"` 
-                : '输入视图 ID（例如 "thino_view", "graph-view"）');
+        // --- 2. 添加规则区域 (整合了输入框和可用ID列表) ---
+        containerEl.createEl('h3', { text: '添加新规则' });
+        const addSection = containerEl.createDiv({ cls: 'auto-switch-add-section' });
+
+        const addRuleSetting = new Setting(addSection)
+            .setName('视图 ID')
+            .setDesc('输入插件视图的 ID (例如 "thino_view")');
 
         addRuleSetting
             .addText(text => text
@@ -125,14 +136,26 @@ class AutoSwitchSettingTab extends PluginSettingTab {
                     this.newRuleViewType = value;
                 }));
 
+        // 智能按钮逻辑
         if (currentViewType) {
-            addRuleSetting.addButton(btn => btn
-                .setButtonText('填入当前ID')
-                .setTooltip('使用当前活跃窗口的视图ID')
-                .onClick(() => {
-                    this.newRuleViewType = currentViewType;
-                    this.display();
-                }));
+            const btnText = isCurrentRuleExist ? '活跃视图ID已存在' : '填入当前ID';
+            const btnTooltip = isCurrentRuleExist 
+                ? `当前活跃视图 "${currentViewType}" 已在规则列表中` 
+                : `使用当前活跃窗口的视图ID: "${currentViewType}"`;
+
+            addRuleSetting.addButton(btn => {
+                btn.setButtonText(btnText)
+                   .setTooltip(btnTooltip);
+                
+                if (isCurrentRuleExist) {
+                    btn.setDisabled(true);
+                } else {
+                    btn.onClick(() => {
+                        this.newRuleViewType = currentViewType;
+                        this.display();
+                    });
+                }
+            });
         }
 
         addRuleSetting.addButton(btn => btn
@@ -154,6 +177,21 @@ class AutoSwitchSettingTab extends PluginSettingTab {
                         this.display();
                     }
                 }));
+
+        // 可用 ID 列表 (作为添加区域的一部分)
+        if (availableViewTypes.length > 0) {
+            const chipsContainer = addSection.createDiv({ cls: 'auto-switch-chips-container' });
+            chipsContainer.createEl('span', { text: '检测到未设置规则的视图 (点击填入):', cls: 'auto-switch-chips-label' });
+            const chipsList = chipsContainer.createDiv({ cls: 'auto-switch-chips-list' });
+            
+            availableViewTypes.forEach(vt => {
+                const chip = chipsList.createEl('span', { cls: 'auto-switch-chip', text: vt });
+                chip.onclick = () => {
+                    this.newRuleViewType = vt;
+                    this.display(); 
+                };
+            });
+        }
 
 		containerEl.createEl('h3', { text: '已存规则 (拖动可排序)' });
 

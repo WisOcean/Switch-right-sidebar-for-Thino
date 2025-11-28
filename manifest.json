@@ -1,7 +1,7 @@
 {
 	"id": "auto-switch-sidebar",
 	"name": "Auto Switch Sidebar",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"minAppVersion": "1.0.0",
 	"description": "Auto toggle sidebars based on active plugin view.",
 	"author": "Wis_Ocean",

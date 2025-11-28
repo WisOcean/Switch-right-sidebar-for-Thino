@@ -33,7 +33,7 @@
 
 .auto-switch-rule-header {
     font-weight: bold;
-    font-size: 1.1em;
+    font-size: 1em; /* Reduced from 1.1em to better fit hierarchy */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -47,7 +47,8 @@
     padding: 2px 8px;
     border-radius: 4px;
     font-family: var(--font-monospace);
-    font-size: 0.9em;
+    font-size: 0.85em; /* Slightly smaller */
+    color: var(--text-accent);
 }
 
 .auto-switch-rule-card .setting-item {
@@ -59,6 +60,7 @@
 .auto-switch-rule-card .setting-item-info {
     margin-right: 10px;
     flex: 1;
+    font-size: 0.9em; /* Smaller setting labels inside card */
 }
 
 .auto-switch-rule-card .setting-item-control {
@@ -81,5 +83,70 @@
 .auto-switch-delete-btn:hover {
     color: var(--text-error);
     background-color: var(--background-modifier-error-hover);
+}
+
+/* New styles for Add Rule Section */
+.auto-switch-add-section {
+    background-color: var(--background-secondary);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid var(--background-modifier-border);
+    margin-bottom: 20px;
+}
+
+.auto-switch-add-section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+.auto-switch-add-section .setting-item {
+    border-bottom: none;
+    padding: 0;
+}
+
+.auto-switch-chips-container {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--background-modifier-border);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.auto-switch-chips-label {
+    font-size: 0.9em;
+    color: var(--text-muted);
+    font-weight: bold;
+}
+
+.auto-switch-chips-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.auto-switch-chip {
+    font-family: var(--font-monospace);
+    font-size: 0.85em;
+    background-color: var(--background-primary);
+    padding: 4px 10px;
+    border-radius: 12px;
+    border: 1px solid var(--background-modifier-border);
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-normal);
+}
+
+.auto-switch-chip:hover {
+    border-color: var(--interactive-accent);
+    color: var(--interactive-accent);
+    background-color: var(--background-modifier-hover);
+}
+
+.auto-switch-chip.copied {
+    background-color: var(--interactive-success);
+    color: var(--text-on-accent);
+    border-color: var(--interactive-success);
 }
 
